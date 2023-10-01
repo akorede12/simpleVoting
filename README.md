@@ -1,6 +1,7 @@
 # Swisstronik Voting Contract
 
 This project is a submission for Swisstronik developer challege.
+Deployed contract address on the swisstronil testnet: "0xCdbd1185432173deBFA7Ac39615f4c8Bd61376B1"
 
 ```shell
 Developer Challenge:
