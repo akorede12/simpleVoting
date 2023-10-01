@@ -20,8 +20,8 @@ contract Voting {
 
     address private electionCreator; // The contract owner
 
-    mapping(address => bool) public voters; // mapping to store all voters
-    mapping(address => uint) public votes; // mapping to store all votes
+    mapping(address => bool) private voters; // mapping to store all voters
+    mapping(address => uint) private votes; // mapping to store all votes
 
     // An array of options available for users to vote
     string[] private voteOptions;
@@ -74,7 +74,13 @@ contract Voting {
         return (electionName, electionCreator);
     }
 
-    function getElectionDetails() public view returns (string memory, address) {
+    function getElectionDetails()
+        public
+        view
+        onlyOwner
+        onlyVoter
+        returns (string memory, address)
+    {
         return (electionName, electionCreator);
     }
 
@@ -98,7 +104,7 @@ contract Voting {
     }
 
     // function to view the registered voters
-    function viewVoters() public view returns (address[] memory) {
+    function viewVoters() public view onlyOwner returns (address[] memory) {
         return (allowedVoters);
     }
 
@@ -135,7 +141,13 @@ contract Voting {
         }
     }
 
-    function viewVoteOptions() public view returns (string[] memory) {
+    function viewVoteOptions()
+        public
+        view
+        onlyOwner
+        onlyVoter
+        returns (string[] memory)
+    {
         return (voteOptions);
     }
 
@@ -153,7 +165,13 @@ contract Voting {
     }
 
     // Function to get all the votes, and the respective voters.
-    function getVotes() public view returns (voterAndVotes[] memory) {
+    function getVotes()
+        public
+        view
+        onlyOwner
+        onlyVoter
+        returns (voterAndVotes[] memory)
+    {
         // uint variable to keep track of dynamic array
         uint voterVoteCount = 0;
         // for loop to iterate through the allowedVoters arrays,
@@ -192,7 +210,7 @@ contract Voting {
     // Function to get the vote count for a vote option
     function getVoteOptionVoteCount(
         string memory option
-    ) public view returns (uint) {
+    ) public view onlyOwner returns (uint) {
         // use checker library to check if user option is valid
         isValidOption(voteOptions, option);
         // get the index of the options in voteOptions array
@@ -213,7 +231,13 @@ contract Voting {
         return voteCount;
     }
 
-    function getElectionWinner() public view returns (string memory) {
+    function getElectionWinner()
+        public
+        view
+        onlyOwner
+        onlyVoter
+        returns (string memory)
+    {
         // struct array of votes and vote Options
         votesForVoteOptions[]
             memory votesForVoteOptionsArray = new votesForVoteOptions[](
